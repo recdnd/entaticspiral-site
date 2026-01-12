@@ -17,18 +17,22 @@ Placeholders used by builder:
   <!-- Canonical (builder will fill or inject) -->
   <link rel="canonical" href="{{canonical}}" />
 
-  <meta name="description" content="Entatic Spiral — canonical documentation portal for the Spiral language field." />
+  <meta name="description" content="{{meta_description}}" />
   <meta name="robots" content="index,follow" />
 
   <!-- OpenGraph / Twitter -->
-  <meta property="og:type" content="website" />
-  <meta property="og:title" content="{{title}} · Entatic Spiral" />
-  <meta property="og:description" content="Canonical documentation portal for the Spiral language field." />
-  <meta property="og:url" content="{{canonical}}" />
+  <meta property="og:type" content="{{og_type}}" />
+  <meta property="og:title" content="{{og_title}} · Entatic Spiral" />
+  <meta property="og:description" content="{{og_description}}" />
+  <meta property="og:url" content="{{og_url}}" />
   <meta property="og:site_name" content="Entatic Spiral" />
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="{{title}} · Entatic Spiral" />
-  <meta name="twitter:description" content="Canonical documentation portal for the Spiral language field." />
+  <meta name="twitter:title" content="{{twitter_title}} · Entatic Spiral" />
+  <meta name="twitter:description" content="{{twitter_description}}" />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="512x512" href="/android-chrome-512x512.png" />
 
   <!-- Styles: you already maintain a tokenized CSS system -->
   <link rel="stylesheet" href="/styles/tokens.css" />
@@ -41,7 +45,10 @@ Placeholders used by builder:
   <header class="site-header">
     <div class="container header-row">
       <div class="brand">
-        <a class="brand-title" href="/">Entatic Spiral</a>
+        <a class="brand-title" href="/">
+          <img class="brand-icon" src="/spiral-system.png" alt="" />
+          Entatic Spiral
+        </a>
         <div class="brand-subtitle">{{subtitle}}</div>
       </div>
 
@@ -57,6 +64,7 @@ Placeholders used by builder:
       <nav class="utils" aria-label="Utility">
         <a class="tab" href="/index/terms/">Index</a>
         <a class="tab" href="/latest/">Latest</a>
+        <a class="tab" href="/search/">Search</a>
       </nav>
     </div>
   </header>

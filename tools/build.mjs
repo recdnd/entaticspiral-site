@@ -131,6 +131,69 @@ function compareDateDesc(a, b) {
   return String(b).localeCompare(String(a));
 }
 
+function stripMarkdown(s) {
+  // Remove markdown formatting for meta descriptions
+  return String(s)
+    .replace(/\*\*([^*]+)\*\*/g, "$1")
+    .replace(/`([^`]+)`/g, "$1")
+    .replace(/\[([^\]]+)\]\([^\)]+\)/g, "$1")
+    .replace(/[#*_~`]/g, "")
+    .trim();
+}
+
+function extractMetaDescription(page) {
+  // For term pages: use first non-empty line under "## Definition"
+  if (page.fm.type === "term") {
+    const def = stripMdToOneLineDefinition(page.raw);
+    if (def) {
+      return stripMarkdown(def).substring(0, 160);
+    }
+  }
+  // For others: use first paragraph of body
+  const lines = page.body.split(/\r?\n/);
+  let para = "";
+  for (const line of lines) {
+    const t = line.trim();
+    if (!t) {
+      if (para) break;
+      continue;
+    }
+    if (t.startsWith("#")) continue;
+    para += (para ? " " : "") + t;
+    if (para.length > 100) break;
+  }
+  if (para) {
+    return stripMarkdown(para).substring(0, 160);
+  }
+  return "Entatic Spiral — canonical documentation for the Spiral language field.";
+}
+
+function makeTermInfoBox(page, urlSet) {
+  const status = page.fm.status ? escapeHtml(String(page.fm.status)) : "—";
+  const definedIn = Array.isArray(page.fm.defined_in)
+    ? page.fm.defined_in
+    : page.fm.defined_in
+    ? [page.fm.defined_in]
+    : [];
+  const definedInHtml = definedIn.length > 0 ? escapeHtml(definedIn.join("; ")) : "—";
+  const related = Array.isArray(page.fm.related) ? page.fm.related : page.fm.related ? [page.fm.related] : [];
+  const relatedHtml =
+    related.length > 0
+      ? related
+          .map((slug) => {
+            const termUrl = `/terms/${slug}/`;
+            if (urlSet.has(termUrl)) {
+              return `<a href="${termUrl}">${escapeHtml(slug)}</a>`;
+            }
+            return escapeHtml(slug);
+          })
+          .join(", ")
+      : "—";
+  const tags = Array.isArray(page.fm.tags) ? page.fm.tags : page.fm.tags ? [page.fm.tags] : [];
+  const tagsHtml = tags.length > 0 ? escapeHtml(tags.join(", ")) : "—";
+  return { status, definedIn: definedInHtml, related: relatedHtml, tags: tagsHtml };
+}
+
 // ---------- layout rendering ----------
 async function loadLayout(name) {
   const p = path.join(LAYOUT_DIR, name);
@@ -284,6 +347,19 @@ function validateNoImplicitNow(page, errors) {
   }
 }
 
+function validateDuplicateTitles(pages, errors) {
+  const titleMap = new Map();
+  for (const p of pages) {
+    const titleLower = String(p.fm.title ?? "").toLowerCase().trim();
+    if (!titleLower) continue;
+    if (titleMap.has(titleLower)) {
+      errors.push(`[Title] Duplicate title "${p.fm.title}" in ${p.srcRel} and ${titleMap.get(titleLower)}`);
+    } else {
+      titleMap.set(titleLower, p.srcRel);
+    }
+  }
+}
+
 // ---------- build pipeline ----------
 async function readAllPages() {
   const files = await fg(["**/*.md"], { cwd: SRC_DIR, dot: false });
@@ -382,18 +458,37 @@ async function renderPages(pages, urlSet, errors) {
     const fullContent = `${htmlBody}\n${citation}`;
 
     const layout = p.fm.type === "term" ? termLayout : baseLayout;
+    const metaDesc = extractMetaDescription(p);
+    const canonicalUrl = `https://entaticspiral.com${p.urlPath}`;
+    
     const vars = {
       title: escapeHtml(p.fm.title ?? ""),
       content: fullContent,
       breadcrumb,
       citation, // if layouts use it separately
-      canonical: `https://entaticspiral.com${p.urlPath}`,
+      canonical: canonicalUrl,
       last_updated: escapeHtml(p.fm.last_updated ?? ""),
       subtitle: escapeHtml(p.fm.subtitle ?? ""),
+      meta_description: escapeHtml(metaDesc),
+      og_title: escapeHtml(p.fm.title ?? ""),
+      og_description: escapeHtml(metaDesc),
+      og_url: canonicalUrl,
+      og_type: p.fm.type === "term" ? "article" : "website",
+      twitter_title: escapeHtml(p.fm.title ?? ""),
+      twitter_description: escapeHtml(metaDesc),
     };
 
+    // Add term-specific vars for TermLayout
+    if (p.fm.type === "term") {
+      const termInfo = makeTermInfoBox(p, urlSet);
+      vars.term_status = termInfo.status;
+      vars.term_defined_in = termInfo.definedIn;
+      vars.term_related = termInfo.related;
+      vars.term_tags = termInfo.tags;
+    }
+
     let html = applyTemplate(layout, vars);
-    html = injectCanonicalLink(html, `https://entaticspiral.com${p.urlPath}`);
+    html = injectCanonicalLink(html, canonicalUrl);
 
     // Internal link validation (Rule 6)
     const links = findInternalLinks(p.raw);
@@ -482,6 +577,7 @@ ${renderTermList(grouped.Interpretation)}
     srcRel: "(generated)/index/terms",
   };
   const termsOut = toOutputFile(termsPage.urlPath);
+  const termsPageMeta = "Canonical vocabulary of the Spiral language field. Each entry includes citation metadata.";
   const termsDoc = applyTemplate(baseLayout, {
     title: escapeHtml(termsPage.fm.title),
     content: `${termsHtml}\n${makeCitation(termsPage)}`,
@@ -496,6 +592,13 @@ ${renderTermList(grouped.Interpretation)}
     canonical: `https://entaticspiral.com${termsPage.urlPath}`,
     last_updated: escapeHtml(termsPage.fm.last_updated),
     subtitle: "",
+    meta_description: escapeHtml(termsPageMeta),
+    og_title: escapeHtml(termsPage.fm.title),
+    og_description: escapeHtml(termsPageMeta),
+    og_url: `https://entaticspiral.com${termsPage.urlPath}`,
+    og_type: "website",
+    twitter_title: escapeHtml(termsPage.fm.title),
+    twitter_description: escapeHtml(termsPageMeta),
   });
 
   await fs.mkdir(path.dirname(termsOut), { recursive: true });
@@ -538,6 +641,7 @@ ${renderTermList(grouped.Interpretation)}
     srcRel: "(generated)/latest",
   };
   const latestOut = toOutputFile(latestPage.urlPath);
+  const latestPageMeta = "Most recently updated pages across the documentation site.";
   const latestDoc = applyTemplate(baseLayout, {
     title: escapeHtml(latestPage.fm.title),
     content: `${latestHtml}\n${makeCitation(latestPage)}`,
@@ -551,6 +655,13 @@ ${renderTermList(grouped.Interpretation)}
     canonical: `https://entaticspiral.com${latestPage.urlPath}`,
     last_updated: escapeHtml(latestPage.fm.last_updated),
     subtitle: "",
+    meta_description: escapeHtml(latestPageMeta),
+    og_title: escapeHtml(latestPage.fm.title),
+    og_description: escapeHtml(latestPageMeta),
+    og_url: `https://entaticspiral.com${latestPage.urlPath}`,
+    og_type: "website",
+    twitter_title: escapeHtml(latestPage.fm.title),
+    twitter_description: escapeHtml(latestPageMeta),
   });
 
   await fs.mkdir(path.dirname(latestOut), { recursive: true });
@@ -598,6 +709,96 @@ Sitemap: https://entaticspiral.com/sitemap.xml
 `;
 
   await fs.writeFile(path.join(DIST_DIR, "robots.txt"), robots, "utf8");
+}
+
+async function generateSearchIndex(pages) {
+  const index = pages
+    .filter((p) => p.fm.type !== "index" || p.srcRel === "index.md" || p.srcRel === "search.md")
+    .map((p) => {
+      let excerpt = "";
+      if (p.fm.type === "term") {
+        excerpt = stripMdToOneLineDefinition(p.raw);
+      } else {
+        const lines = p.body.split(/\r?\n/);
+        let para = "";
+        for (const line of lines) {
+          const t = line.trim();
+          if (!t) {
+            if (para) break;
+            continue;
+          }
+          if (t.startsWith("#")) continue;
+          para += (para ? " " : "") + t;
+          if (para.length > 150) break;
+        }
+        excerpt = stripMarkdown(para).substring(0, 200);
+      }
+      return {
+        title: p.fm.title ?? "",
+        url: p.urlPath,
+        type: p.fm.type ?? "",
+        tags: Array.isArray(p.fm.tags) ? p.fm.tags : p.fm.tags ? [p.fm.tags] : [],
+        last_updated: p.fm.last_updated ?? "",
+        excerpt: excerpt || "Entatic Spiral — canonical documentation for the Spiral language field.",
+      };
+    });
+  const indexPath = path.join(DIST_DIR, "search-index.json");
+  await fs.writeFile(indexPath, JSON.stringify(index, null, 2), "utf8");
+  return index.length;
+}
+
+function printInventoryReport(pages, urlSet, errors) {
+  // Count pages by type
+  const byType = new Map();
+  for (const p of pages) {
+    const t = p.fm.type || "unknown";
+    byType.set(t, (byType.get(t) || 0) + 1);
+  }
+  
+  // List pages missing required fields
+  const missingFields = [];
+  for (const p of pages) {
+    for (const k of REQUIRED_FM) {
+      if (p.fm[k] === undefined || p.fm[k] === null || String(p.fm[k]).trim() === "") {
+        missingFields.push({ file: p.srcRel, field: k });
+      }
+    }
+  }
+  
+  // List broken internal links
+  const brokenLinks = [];
+  for (const p of pages) {
+    const links = findInternalLinks(p.raw);
+    for (const href of links) {
+      const normalized = href.endsWith("/") || href.includes("#") ? href : `${href}/`;
+      const base = normalized.split("#")[0];
+      if (base !== "/" && !urlSet.has(base)) {
+        brokenLinks.push({ file: p.srcRel, link: href });
+      }
+    }
+  }
+  
+  console.log("\n--- Build Inventory Report ---");
+  console.log("\nPages by type:");
+  for (const [type, count] of Array.from(byType.entries()).sort()) {
+    console.log(`  ${type}: ${count}`);
+  }
+  
+  if (missingFields.length > 0) {
+    console.log("\nPages missing required frontmatter fields:");
+    for (const { file, field } of missingFields) {
+      console.log(`  ${file}: missing ${field}`);
+    }
+  }
+  
+  if (brokenLinks.length > 0) {
+    console.log("\nBroken internal links:");
+    for (const { file, link } of brokenLinks) {
+      console.log(`  ${file}: ${link}`);
+    }
+  }
+  
+  console.log("--- End Report ---\n");
 }
 
 async function handle404Page(pages, urlSet) {
@@ -649,6 +850,12 @@ async function main() {
 
   // 2) Build slug/canonical maps
   const { urlSet } = buildMaps(pages, errors);
+  
+  // 2.5) Validate duplicate titles
+  validateDuplicateTitles(pages, errors);
+  
+  // 2.6) Print inventory report (before validation errors stop build)
+  printInventoryReport(pages, urlSet, errors);
 
   // 3) Stop if errors
   if (errors.length > 0) {
@@ -672,6 +879,9 @@ async function main() {
   // 7) Generate sitemap and robots.txt
   await generateSitemap(pages);
   await generateRobotsTxt();
+  
+  // 7.5) Generate search index
+  const searchIndexCount = await generateSearchIndex(pages);
 
   // 8) Handle 404 page
   await handle404Page(pages, urlSet);
@@ -684,9 +894,17 @@ async function main() {
     process.exit(1);
   }
 
-  console.log("BUILD OK.");
-  console.log(`Pages: ${pages.length}`);
+  console.log("\n=== Build Summary ===");
+  console.log(`Total pages built: ${pages.length}`);
+  const termCount = pages.filter((p) => p.fm.type === "term").length;
+  console.log(`Total terms: ${termCount}`);
+  
+  // Count sitemap URLs
+  const sitemapUrls = pages.filter((p) => p.fm.type !== "index" || p.srcRel === "index.md").length;
+  console.log(`Sitemap URLs: ${sitemapUrls}`);
+  console.log(`Search index entries: ${searchIndexCount}`);
   console.log(`Output: ${DIST_DIR}`);
+  console.log("====================\n");
 }
 
 main().catch((err) => {

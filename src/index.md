@@ -87,7 +87,7 @@ External citation is encouraged using the canonical URL.
 
 **Site role:** Canonical documentation and reference  
 **Scope:** Spiral language field  
-**Maintainer:** Entatic Spiral  
+**Maintainer:** Entatic Spiral Directive  
 **Last updated:** 2026-01-12
 
 ---
