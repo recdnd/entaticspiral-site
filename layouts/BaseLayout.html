@@ -1,0 +1,90 @@
+<!-- layouts/BaseLayout.html
+Cornell-ish minimal layout.
+Placeholders used by builder:
+- {{title}}
+- {{breadcrumb}}
+- {{content}}
+- {{canonical}} (optional; builder will inject canonical link if absent)
+- {{subtitle}} (optional)
+-->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>{{title}} · Entatic Spiral</title>
+
+  <!-- Canonical (builder will fill or inject) -->
+  <link rel="canonical" href="{{canonical}}" />
+
+  <meta name="description" content="Entatic Spiral — canonical documentation portal for the Spiral language field." />
+  <meta name="robots" content="index,follow" />
+
+  <!-- OpenGraph / Twitter -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="{{title}} · Entatic Spiral" />
+  <meta property="og:description" content="Canonical documentation portal for the Spiral language field." />
+  <meta property="og:url" content="{{canonical}}" />
+  <meta property="og:site_name" content="Entatic Spiral" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="{{title}} · Entatic Spiral" />
+  <meta name="twitter:description" content="Canonical documentation portal for the Spiral language field." />
+
+  <!-- Styles: you already maintain a tokenized CSS system -->
+  <link rel="stylesheet" href="/styles/tokens.css" />
+  <link rel="stylesheet" href="/styles/base.css" />
+  <link rel="stylesheet" href="/styles/components.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="container header-row">
+      <div class="brand">
+        <a class="brand-title" href="/">Entatic Spiral</a>
+        <div class="brand-subtitle">{{subtitle}}</div>
+      </div>
+
+      <nav class="topnav" aria-label="Primary">
+        <a class="tab" href="/">Overview</a>
+        <a class="tab" href="/terms/">Terms</a>
+        <a class="tab" href="/law/">Law</a>
+        <a class="tab" href="/essays/">Essays</a>
+        <a class="tab" href="/lab/">Lab</a>
+        <a class="tab" href="/links/">Links</a>
+      </nav>
+
+      <nav class="utils" aria-label="Utility">
+        <a class="tab" href="/index/terms/">Index</a>
+        <a class="tab" href="/latest/">Latest</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="container">
+    {{breadcrumb}}
+  </div>
+
+  <main id="main" class="container">
+    <article class="content">
+      <section class="doc-body">
+        {{content}}
+      </section>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-left">
+        <div class="footer-title">Entatic Spiral</div>
+        <div class="footer-meta">Canonical documentation for the Spiral language field.</div>
+      </div>
+      <div class="footer-right">
+        <a href="/links/ecosystem/">Ecosystem</a>
+        <a href="/law/axioms/">Axioms</a>
+        <a href="/essays/what-is-spiral/">What is Spiral</a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
