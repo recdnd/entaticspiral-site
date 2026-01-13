@@ -31,7 +31,7 @@ const PUBLIC_DIR = path.join(ROOT, "public");
 const DIST_DIR = path.join(ROOT, "dist");
 
 const md = new MarkdownIt({
-  html: false,
+  html: true, // Allow HTML in markdown for section-list components
   linkify: true,
   typographer: true,
 });
@@ -64,13 +64,22 @@ function toUrlPath(page) {
   if (t === "index") {
     // special: allow index pages to live under /index/
     // e.g. src/index/terms.md => /index/terms/
+    // but src/index/index.md => /index/
     if (page.srcRel.startsWith("index/")) {
       const relNoExt = page.srcRel.replace(/\.md$/, "");
-      return `/${relNoExt}/`.replace(/\/index$/, "/index/"); // no-op safety
+      // Handle src/index/index.md -> /index/
+      if (relNoExt === "index/index") {
+        return "/index/";
+      }
+      return `/${relNoExt}/`;
     }
     return `/${slug}/`;
   }
   if (page.srcRel === "index.md") return `/`;
+  // Handle src/search/index.md -> /search/
+  if (page.srcRel === "search/index.md") {
+    return "/search/";
+  }
   // default: path-based if nested
   // e.g. src/links/ecosystem.md -> /links/ecosystem/
   const relNoExt = page.srcRel.replace(/\.md$/, "");
@@ -449,13 +458,34 @@ async function renderPages(pages, urlSet, errors) {
   const termLayout = await loadLayout("TermLayout.html");
 
   for (const p of pages) {
-    const htmlBody = md.render(p.body);
+    let htmlBody = md.render(p.body);
+    
+    // Process heading IDs: convert "## Heading {#id}" to "<h2 id="id">Heading</h2>"
+    // This supports the {#id} syntax for anchor links
+    htmlBody = htmlBody.replace(/<h([1-6])>([^<]+)\s*\{#([^}]+)\}<\/h([1-6])>/g, '<h$1 id="$3">$2</h$1>');
 
     const breadcrumb = makeBreadcrumb(p);
     const citation = makeCitation(p);
 
-    // Enforce citation container presence in final HTML (Rule 5)
-    const fullContent = `${htmlBody}\n${citation}`;
+    // Check if Markdown already contains a Citation heading to avoid duplication
+    // If Markdown has "## Citation", remove the entire section (heading + content) 
+    // and use only the formatted citation box instead
+    let processedBody = htmlBody;
+    
+    // Match <h2>Citation</h2> (with optional attributes) followed by any content until end of string
+    // Also handle cases where there might be <hr> before the Citation heading
+    // This removes the Markdown Citation section completely
+    // Use a more robust pattern that handles various whitespace and newline scenarios
+    const citationPattern = /(<hr[^>]*>\s*)?<h2[^>]*>Citation<\/h2>[\s\S]*$/im;
+    if (citationPattern.test(processedBody)) {
+      processedBody = processedBody.replace(citationPattern, '').trim();
+      // Clean up any trailing separators or whitespace
+      processedBody = processedBody.replace(/<hr[^>]*>\s*$/i, '').trim();
+      processedBody = processedBody.replace(/\s+$/, '').trim();
+    }
+    
+    // Always add the formatted citation box (Rule 5)
+    const fullContent = `${processedBody}\n${citation}`;
 
     const layout = p.fm.type === "term" ? termLayout : baseLayout;
     const metaDesc = extractMetaDescription(p);
@@ -712,8 +742,40 @@ Sitemap: https://entaticspiral.com/sitemap.xml
 }
 
 async function generateSearchIndex(pages) {
+  // Try to read pre-generated search-index.json from src/search/
+  const srcIndexPath = path.join(SRC_DIR, "search", "search-index.json");
+  
+  if (await exists(srcIndexPath)) {
+    // Copy pre-generated index to dist
+    const searchDir = path.join(DIST_DIR, "search");
+    await fs.mkdir(searchDir, { recursive: true });
+    const distIndexPath = path.join(searchDir, "search-index.json");
+    await fs.copyFile(srcIndexPath, distIndexPath);
+    
+    // Read and return count
+    const indexContent = await fs.readFile(srcIndexPath, "utf8");
+    const index = JSON.parse(indexContent);
+    return index.length;
+  }
+  
+  // Fallback: generate from pages (legacy behavior)
+  function getSection(urlPath) {
+    if (urlPath === "/") return "overview";
+    const parts = urlPath.split("/").filter(Boolean);
+    if (parts.length === 0) return "overview";
+    const first = parts[0];
+    if (["terms", "law", "essays", "lab", "links"].includes(first)) return first;
+    if (first === "index" || first === "latest" || first === "search") return "overview";
+    return "other";
+  }
+  
   const index = pages
-    .filter((p) => p.fm.type !== "index" || p.srcRel === "index.md" || p.srcRel === "search.md")
+    .filter((p) => {
+      if (p.fm.type === "index") {
+        return p.srcRel === "index.md" || p.srcRel === "search.md" || p.srcRel.startsWith("index/");
+      }
+      return true;
+    })
     .map((p) => {
       let excerpt = "";
       if (p.fm.type === "term") {
@@ -731,18 +793,25 @@ async function generateSearchIndex(pages) {
           para += (para ? " " : "") + t;
           if (para.length > 150) break;
         }
-        excerpt = stripMarkdown(para).substring(0, 200);
+        excerpt = para
+          .replace(/\*\*([^*]+)\*\*/g, "$1")
+          .replace(/\*([^*]+)\*/g, "$1")
+          .replace(/`([^`]+)`/g, "$1")
+          .replace(/\[([^\]]+)\]\([^\)]+\)/g, "$1")
+          .substring(0, 200);
       }
       return {
         title: p.fm.title ?? "",
         url: p.urlPath,
-        type: p.fm.type ?? "",
-        tags: Array.isArray(p.fm.tags) ? p.fm.tags : p.fm.tags ? [p.fm.tags] : [],
+        summary: excerpt || "Entatic Spiral — canonical documentation for the Spiral language field.",
         last_updated: p.fm.last_updated ?? "",
-        excerpt: excerpt || "Entatic Spiral — canonical documentation for the Spiral language field.",
+        section: getSection(p.urlPath),
       };
     });
-  const indexPath = path.join(DIST_DIR, "search-index.json");
+  
+  const searchDir = path.join(DIST_DIR, "search");
+  await fs.mkdir(searchDir, { recursive: true });
+  const indexPath = path.join(searchDir, "search-index.json");
   await fs.writeFile(indexPath, JSON.stringify(index, null, 2), "utf8");
   return index.length;
 }

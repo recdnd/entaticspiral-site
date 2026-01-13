@@ -31,7 +31,8 @@ Placeholders used by builder:
   <meta name="twitter:description" content="{{twitter_description}}" />
 
   <!-- Favicon -->
-  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" media="(prefers-color-scheme: light)" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-light-32x32.png" media="(prefers-color-scheme: dark)" />
   <link rel="icon" type="image/png" sizes="512x512" href="/android-chrome-512x512.png" />
 
   <!-- Styles: you already maintain a tokenized CSS system -->
@@ -52,6 +53,24 @@ Placeholders used by builder:
         <div class="brand-subtitle">{{subtitle}}</div>
       </div>
 
+      <!-- Mobile navigation menu -->
+      <details class="mobile-nav">
+        <summary>Menu</summary>
+        <nav class="menu" aria-label="Mobile">
+          <a href="/">Overview</a>
+          <a href="/terms/">Terms</a>
+          <a href="/law/">Law</a>
+          <a href="/essays/">Essays</a>
+          <a href="/lab/">Lab</a>
+          <a href="/links/">Links</a>
+          <hr style="margin: 8px 0; border: 0; border-top: 1px solid var(--border);" />
+          <a href="/index/">Index</a>
+          <a href="/latest/">Latest</a>
+          <a href="/search/">Search</a>
+        </nav>
+      </details>
+
+      <!-- Desktop navigation -->
       <nav class="topnav" aria-label="Primary">
         <a class="tab" href="/">Overview</a>
         <a class="tab" href="/terms/">Terms</a>

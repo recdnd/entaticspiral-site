@@ -7,47 +7,35 @@ last_updated: "2026-01-12"
 
 # Latest Updates
 
-This page lists recently updated or added content on the Entatic Spiral documentation site.  
-Updates are listed in reverse chronological order.
+<div class="box">
+Recently updated pages in this documentation portal.
+</div>
 
----
-
-## 2026-01-12
-
-### Terms
-- [Fragment](/terms/fragment/) - Minimal archival unit
-- [Flame](/terms/flame/) - Atomic emission act
-- [Echo](/terms/echo/) - Residual reference
-- [Trace](/terms/trace/) - Causal linkage
-- [Seal](/terms/seal/) - Governance finality
-- [Sovereignty](/terms/sovereignty/) - Authority unit
-- [Module](/terms/module/) - Operational entity
-- [Glyph](/terms/glyph/) - Symbolic marker
-- [Core](/terms/core/) - Execution constraints
-- [RWX](/terms/rwx/) - Permission model
-- [Recent View](/terms/recent-view/) - Computed perspective
-- [Append-only](/terms/append-only/) - Storage principle
-
-### Pages
-- [Overview](/) - Site introduction and navigation
-- [What Is Spiral](/essays/what-is-spiral/) - Foundational essay
-- [Axioms](/law/axioms/) - Core system constraints
-- [Ecosystem](/links/ecosystem/) - Related systems and sites
-
-### Indexes
-- [Terms Index](/index/terms/) - Complete terms listing
-
----
-
-## Notes
-
-- This list is manually maintained. Future builds will automate aggregation from frontmatter.
-- All updates follow append-only principles: new content extends, does not replace.
+<!--LATEST_START-->
+- 2026-01-12 — [Page Not Found](/404/)
+- 2026-01-12 — [Append-Only and Recent View](/essays/append-only-and-recent-view/)
+- 2026-01-12 — [Essays](/essays/)
+- 2026-01-12 — [What Is Spiral](/essays/what-is-spiral/)
+- 2026-01-12 — [Why Sovereignty](/essays/why-sovereignty/)
+- 2026-01-12 — [Index](/index/)
+- 2026-01-12 — [Terms Index](/index/terms/)
+- 2026-01-12 — [Entatic Spiral](/)
+- 2026-01-12 — [Core Series](/lab/core-series/)
+- 2026-01-12 — [Laboratory](/lab/)
+- 2026-01-12 — [Spiral.ooo Playground](/lab/spiral-ooo-playground/)
+- 2026-01-12 — [Latest Updates](/latest/)
+- 2026-01-12 — [Axioms](/law/axioms/)
+- 2026-01-12 — [Field Law Archive](/law/field-law-archive/)
+- 2026-01-12 — [Law / Specification](/law/)
+- 2026-01-12 — [Sovereignty System Law](/law/sovereignty-system-law/)
+- 2026-01-12 — [Ecosystem](/links/ecosystem/)
+- 2026-01-12 — [Links](/links/)
+- 2026-01-12 — [Append-only](/terms/append-only/)
+- 2026-01-12 — [Core](/terms/core/)
+<!--LATEST_END-->
 
 ---
 
 ## Citation
-
-**Canonical URL:** /latest  
+**Canonical URL:** /latest/  
 **Last updated:** 2026-01-12
-

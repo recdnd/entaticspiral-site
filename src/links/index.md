@@ -9,15 +9,30 @@ last_updated: "2026-01-12"
 
 # Links
 
-> External resources and related projects in the Spiral ecosystem.
+<div class="box">
+Related projects and external references. Items here may be adjacent to Entatic Spiral without being part of the system itself.
+</div>
 
-The Links section provides access to the broader Spiral Universe, including related systems, documentation sites, and ecosystem resources.
+<p class="section-hint">On this page</p>
+<div class="section-list">
+  <a class="section-card" href="#spiral-ecosystem">Spiral ecosystem</a>
+  <a class="section-card" href="#author">Author</a>
+  <a class="section-card" href="#independent">Independent</a>
+</div>
 
-## Ecosystem
+## Spiral ecosystem {#spiral-ecosystem}
 
-- [Ecosystem](/links/ecosystem/) - Complete guide to Spiral Universe properties and projects
+- law.spiral.ooo — Field Law Archive
+- spiral.ooo — product / playground
 
-[[TODO: add more external links]]
+## Author {#author}
+
+- rec.ooo — personal entry point
+- pf.rec.ooo — portfolio / resume
+
+## Independent {#independent}
+
+- braintank.ai — independent publication platform (not part of Entatic Spiral)
 
 ---
 

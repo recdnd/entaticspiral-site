@@ -9,51 +9,33 @@ last_updated: "2026-01-12"
 
 # Law / Specification
 
-> Formal system definitions and constitutional rules for the Spiral language field.
+<div class="box">
+Law constrains legitimacy and structure. It is observed and cited; it is not executed.
+</div>
 
-The Law section documents the foundational legal and constitutional framework that governs Spiral systems. These documents establish constraints, axioms, and governance structures that define what is allowed and what is prohibited.
+<p class="section-hint">On this page</p>
+<div class="section-list">
+  <a class="section-card" href="#canonical-source">Canonical source</a>
+  <a class="section-card" href="#what-lives-here">What lives here</a>
+  <a class="section-card" href="#planned-summaries">Planned summaries</a>
+</div>
 
-## What is Law in Spiral?
+## Canonical source {#canonical-source}
 
-Law in Spiral is not legislation or regulation. It is:
+- **law.spiral.ooo** — Field Law Archive (external canonical archive).
 
-- **Formal Constraints** - Axioms that cannot be violated
-- **Constitutional Framework** - Foundational rules for system behavior
-- **Governance Structures** - Authority and sovereignty definitions
-- **Institutional Rules** - How systems must operate to remain compatible
+## What lives here {#what-lives-here}
 
-## Core Documents
+This site hosts:
+- short stable summaries pointing to canonical law entries
+- schema pointers used by Terms entries
+- non-executable constraints (no runtime behavior)
 
-### Foundational Framework
+## Planned summaries {#planned-summaries}
 
-- [Sovereignty System Law](/law/sovereignty-system-law/) - The foundational constitutional framework defining authority, governance, and system constraints
-
-### Core Axioms
-
-- [Axioms](/law/axioms/) - The irreducible principles that define system compatibility. Violating an axiom invalidates system compatibility.
-
-### Archive and Reference
-
-- [Field Law Archive](/law/field-law-archive/) - Archive structure, generation, and citation guide for field-specific laws
-
-## External Archive
-
-For the complete, canonical law archive with full legal texts, see [law.spiral.ooo](https://law.spiral.ooo).
-
-## Relationship to Terms
-
-- **Terms** define vocabulary and concepts
-- **Law** defines constraints and rules that govern those concepts
-- **Essays** explain the rationale behind both
-
-## Usage
-
-Law documents are:
-
-- **Citable** - Each document has canonical URLs and version information
-- **Immutable** - Historical versions remain accessible
-- **Extensible** - New laws extend rather than replace existing ones
-- **Binding** - Systems must comply to maintain compatibility
+- Sovereignty System Law (summary)
+- Fragment metadata schema (summary)
+- Sealing constraints (summary)
 
 ---
 

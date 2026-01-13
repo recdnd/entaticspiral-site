@@ -9,16 +9,28 @@ last_updated: "2026-01-12"
 
 # Laboratory
 
-> Demos, playgrounds, and experimental implementations of Spiral systems.
+<div class="box">
+Demonstrations and implementations. Lab materials may change. They apply the system but do not define it.
+</div>
 
-The Laboratory section provides access to executable demonstrations, interactive tools, and experimental implementations that bring Spiral concepts to life.
+<p class="section-hint">On this page</p>
+<div class="section-list">
+  <a class="section-card" href="#primary-demo">Primary demo</a>
+  <a class="section-card" href="#research-core">Research core</a>
+  <a class="section-card" href="#notes">Notes</a>
+</div>
 
-## Available Demos
+## Primary demo {#primary-demo}
 
-- [Spiral.ooo Playground](/lab/spiral-ooo-playground/) - Interactive tools and editor for Spiral, including flame editor, suscoin, RWX, and Arc workflow
-- [Core Series](/lab/core-series/) - Algorithm and specification research prototypes documenting Spiral core mechanics
+- **spiral.ooo** — interactive flame editor / playground.
 
-[[TODO: confirm lab entries + URLs]]
+## Research core {#research-core}
+
+- **core.rec.ooo** — spiral-core-series (append-only event / RECENT_A prototype).
+
+## Notes {#notes}
+
+Lab pages are allowed to change quickly. Do not cite Lab as canonical definitions.
 
 ---
 
