@@ -7,10 +7,6 @@ h1{font-family:var(--serif); font-size:clamp(28px,7vw,44px); line-height:1.15; m
 @media (max-width: 720px){
   h1{margin-top:8px;}
 }
-.term-main .doc-body h1:first-of-type{display:flex; align-items:flex-end; gap:12px; line-height:1.15;}
-.term-main .doc-body h1:first-of-type::before{content:""; background-image:url(/spiral-system.png); background-size:contain; background-repeat:no-repeat; background-position:bottom; width:calc(clamp(32px,5vw,44px) * 2); height:calc(clamp(32px,5vw,44px) * 2); display:inline-block; flex-shrink:0;}
-.term-main .doc-body h1:first-of-type:hover{color:#0000FF;}
-.term-main .doc-body h1:first-of-type:hover::before{filter:brightness(0) saturate(100%) invert(27%) sepia(100%) saturate(7499%) hue-rotate(241deg) brightness(101%) contrast(102%);}
 h2{font-size:18px; margin:18px 0 10px;}
 .lede{font-size:16px; color:var(--muted); max-width:72ch;}
 
