@@ -13,13 +13,6 @@ last_updated: "2026-01-12"
 Canonical terminology for Entatic Spiral. Definitions here are designed to be linkable and citable.
 </div>
 
-<p class="section-hint">On this page</p>
-<div class="section-list">
-  <a class="section-card" href="#core-terms">Core terms</a>
-  <a class="section-card" href="#next-terms">Next terms</a>
-  <a class="section-card" href="#entry-format">Entry format</a>
-</div>
-
 ## Core terms {#core-terms}
 
 - **[Fragment](/terms/fragment/)**

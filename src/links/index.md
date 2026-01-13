@@ -13,13 +13,6 @@ last_updated: "2026-01-12"
 Related projects and external references. Items here may be adjacent to Entatic Spiral without being part of the system itself.
 </div>
 
-<p class="section-hint">On this page</p>
-<div class="section-list">
-  <a class="section-card" href="#spiral-ecosystem">Spiral ecosystem</a>
-  <a class="section-card" href="#author">Author</a>
-  <a class="section-card" href="#independent">Independent</a>
-</div>
-
 ## Spiral ecosystem {#spiral-ecosystem}
 
 - law.spiral.ooo — Field Law Archive

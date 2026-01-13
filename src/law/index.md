@@ -13,13 +13,6 @@ last_updated: "2026-01-12"
 Law constrains legitimacy and structure. It is observed and cited; it is not executed.
 </div>
 
-<p class="section-hint">On this page</p>
-<div class="section-list">
-  <a class="section-card" href="#canonical-source">Canonical source</a>
-  <a class="section-card" href="#what-lives-here">What lives here</a>
-  <a class="section-card" href="#planned-summaries">Planned summaries</a>
-</div>
-
 ## Canonical source {#canonical-source}
 
 - **law.spiral.ooo** — Field Law Archive (external canonical archive).

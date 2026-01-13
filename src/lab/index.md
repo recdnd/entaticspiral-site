@@ -13,13 +13,6 @@ last_updated: "2026-01-12"
 Demonstrations and implementations. Lab materials may change. They apply the system but do not define it.
 </div>
 
-<p class="section-hint">On this page</p>
-<div class="section-list">
-  <a class="section-card" href="#primary-demo">Primary demo</a>
-  <a class="section-card" href="#research-core">Research core</a>
-  <a class="section-card" href="#notes">Notes</a>
-</div>
-
 ## Primary demo {#primary-demo}
 
 - **spiral.ooo** — interactive flame editor / playground.

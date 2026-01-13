@@ -13,12 +13,6 @@ last_updated: "2026-01-12"
 Essays provide interpretation and context. They do not define canonical terms.
 </div>
 
-<p class="section-hint">On this page</p>
-<div class="section-list">
-  <a class="section-card" href="#planned-essays">Planned essays</a>
-  <a class="section-card" href="#writing-policy">Writing policy</a>
-</div>
-
 ## Planned essays {#planned-essays}
 
 - Why Entatic Spiral is not an agent system
