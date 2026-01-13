@@ -15,11 +15,11 @@ Demonstrations and implementations. Lab materials may change. They apply the sys
 
 ## Primary demo {#primary-demo}
 
-- **spiral.ooo** — interactive flame editor / playground.
+- **[spiral.ooo](https://spiral.ooo)** — interactive flame editor / playground.
 
 ## Research core {#research-core}
 
-- **core.rec.ooo** — spiral-core-series (append-only event / RECENT_A prototype).
+- **[core.rec.ooo](https://core.rec.ooo)** — spiral-core-series (append-only event / RECENT_A prototype).
 
 ## Notes {#notes}
 

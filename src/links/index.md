@@ -15,17 +15,17 @@ Related projects and external references. Items here may be adjacent to Entatic 
 
 ## Spiral ecosystem {#spiral-ecosystem}
 
-- law.spiral.ooo — Field Law Archive
-- spiral.ooo — product / playground
+- [law.spiral.ooo](https://law.spiral.ooo) — Field Law Archive
+- [spiral.ooo](https://spiral.ooo) — product / playground
 
 ## Author {#author}
 
-- rec.ooo — personal entry point
-- pf.rec.ooo — portfolio / resume
+- [rec.ooo](https://rec.ooo) — personal entry point
+- [pf.rec.ooo](https://pf.rec.ooo) — portfolio / resume
 
 ## Independent {#independent}
 
-- braintank.ai — independent publication platform (not part of Entatic Spiral)
+- [braintank.ai](https://braintank.ai) — independent publication platform (not part of Entatic Spiral)
 
 ---
 

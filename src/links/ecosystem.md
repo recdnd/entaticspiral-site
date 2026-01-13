@@ -14,30 +14,30 @@ Each property serves a distinct role.
 
 ## Core Systems
 
-- **spiral.ooo**  
+- **[spiral.ooo](https://spiral.ooo)**  
   The primary executable system for Spiral, including interactive interfaces and runtime components.
 
-- **law.spiral.ooo**  
+- **[law.spiral.ooo](https://law.spiral.ooo)**  
   The institutional archive of governance texts and sovereignty laws.
 
-- **core.rec.ooo**  
+- **[core.rec.ooo](https://core.rec.ooo)**  
   Research prototypes and specifications related to Spiral core mechanics.
 
 ---
 
 ## Documentation and Identity
 
-- **entaticspiral.com**  
+- **[entaticspiral.com](https://entaticspiral.com)**  
   Canonical documentation and reference site for the Spiral language field.
 
-- **rec.ooo**  
+- **[rec.ooo](https://rec.ooo)**  
   Personal identity and authorship site of the system originator.
 
 ---
 
 ## Related Publications
 
-- **braintank.ai**  
+- **[braintank.ai](https://braintank.ai)**  
   Independent research and publication platform.  
   Not governed by Spiral, but conceptually adjacent.
 

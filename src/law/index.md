@@ -15,7 +15,7 @@ Law constrains legitimacy and structure. It is observed and cited; it is not exe
 
 ## Canonical source {#canonical-source}
 
-- **law.spiral.ooo** — Field Law Archive (external canonical archive).
+- **[law.spiral.ooo](https://law.spiral.ooo)** — Field Law Archive (external canonical archive).
 
 ## What lives here {#what-lives-here}
 
