@@ -225,6 +225,18 @@ function applyTemplate(layoutHtml, vars) {
   return out;
 }
 
+// Helper function to generate nav active states based on URL path
+function getNavActive(urlPath) {
+  return {
+    nav_overview_active: urlPath === "/" ? "active" : "",
+    nav_terms_active: urlPath.startsWith("/terms/") ? "active" : "",
+    nav_law_active: urlPath.startsWith("/law/") ? "active" : "",
+    nav_essays_active: urlPath.startsWith("/essays/") ? "active" : "",
+    nav_lab_active: urlPath.startsWith("/lab/") ? "active" : "",
+    nav_links_active: urlPath.startsWith("/links/") ? "active" : "",
+  };
+}
+
 function makeBreadcrumb(page) {
   // Cornell-ish breadcrumb: Overview / Section / Title
   const url = page.urlPath;
@@ -491,6 +503,9 @@ async function renderPages(pages, urlSet, errors) {
     const metaDesc = extractMetaDescription(p);
     const canonicalUrl = `https://entaticspiral.com${p.urlPath}`;
     
+    // Determine active nav tab based on URL path
+    const navActive = getNavActive(p.urlPath);
+    
     const vars = {
       title: escapeHtml(p.fm.title ?? ""),
       content: fullContent,
@@ -506,6 +521,7 @@ async function renderPages(pages, urlSet, errors) {
       og_type: p.fm.type === "term" ? "article" : "website",
       twitter_title: escapeHtml(p.fm.title ?? ""),
       twitter_description: escapeHtml(metaDesc),
+      ...navActive,
     };
 
     // Add term-specific vars for TermLayout
@@ -629,6 +645,7 @@ ${renderTermList(grouped.Interpretation)}
     og_type: "website",
     twitter_title: escapeHtml(termsPage.fm.title),
     twitter_description: escapeHtml(termsPageMeta),
+    ...getNavActive(termsPage.urlPath),
   });
 
   await fs.mkdir(path.dirname(termsOut), { recursive: true });
@@ -692,6 +709,7 @@ ${renderTermList(grouped.Interpretation)}
     og_type: "website",
     twitter_title: escapeHtml(latestPage.fm.title),
     twitter_description: escapeHtml(latestPageMeta),
+    ...getNavActive(latestPage.urlPath),
   });
 
   await fs.mkdir(path.dirname(latestOut), { recursive: true });
@@ -888,8 +906,8 @@ async function handle404Page(pages, urlSet) {
     canonical: `https://entaticspiral.com${page404.urlPath}`,
     last_updated: escapeHtml(page404.fm.last_updated ?? ""),
     subtitle: "",
+    ...getNavActive(page404.urlPath),
   };
-
   let html = applyTemplate(baseLayout, vars);
   html = injectCanonicalLink(html, `https://entaticspiral.com${page404.urlPath}`);
 
